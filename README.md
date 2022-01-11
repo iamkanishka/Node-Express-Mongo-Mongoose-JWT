@@ -1,19 +1,21 @@
 
-# Node-Express-Mongo-Mongoose
+# Node-Express-Mongo-Mongoose-JWT
 
-Its a Simple startup NodeJS Application with Express Framework and Mongo and Mongoose.
+Its a Simple startup NodeJS Application with Express Framework and Mongo and Mongoose with JWT Implementation.
 
-To Start with this sample Project with Standart Folder Structure for Backend Develeopment with Mongooose, Please start with Following Steps
+To Start with this  Node-Express-Mongo-Mongoose-JWT Impelemenatted Project, Please start with Following Steps
 
 
 ## Follow the Below Steps
 
 Note:- Before Starting with this Project, Please make sure you have installed latest stabled version of [Nodejs](https://nodejs.org/en/) Application in your System 
 
+
+
 Clone the project
 
 ```bash
-  git clone https://github.com/iamkanishka/Node-Express-Mongo-Mongoose-Starteapp.git
+  git clone https://github.com/iamkanishka/Node-Express-Mongo-Mongoose-JWT.git
 ```
 
 Go to the project directory
@@ -70,3 +72,4 @@ To deploy this project on heroku  run
 [Express](https://expressjs.com/)
 [MongoDB](https://docs.mongodb.com/)
 [Mongoose](https://mongoosejs.com/)
+[JWT](https://jwt.io/introduction)
