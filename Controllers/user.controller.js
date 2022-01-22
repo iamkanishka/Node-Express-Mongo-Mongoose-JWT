@@ -23,7 +23,7 @@ exports.createUser = async (req, res, next) => {
             message: "Email is Required"
         })
     }
-    if (Util.emailcheck(email)) {
+    if (!Util.emailcheck(email)) {
         return res.send({
             status: 3001,
             message: "Please provide right Email"
@@ -45,7 +45,7 @@ exports.createUser = async (req, res, next) => {
         const user = new userModel({
             name: name,
             email: email,
-            phone: phone,
+            mobile: phone,
             password: encryptedpassword,
             isActive:false,
             isVerified: false
@@ -53,15 +53,16 @@ exports.createUser = async (req, res, next) => {
         user.save(async (err,result)=>{
            if(err){
             console.log(err)
-              return res.send({status:3002, Message:'Got some Error'})
+              return res.send({status:3020, Message:'Got some Error'})
            }else{
-             return res.send({status:3002, Message:'User Created Succesfully'})
+             return res.send({status:30023, Message:'User Created Succesfully'})
            } 
         })
 
 
     } catch (err) {
         console.log(err)
+        return res.send({status:3002, Message:'User Created Succesfully'})
     }
    
 }

@@ -16,6 +16,8 @@ const userSchema = new mongoose.Schema({
     mobile: {
       type: String,
       required: true,
+      minlength: 10,
+      maxlength: 10,
     },
     isActive: {
       type: Boolean,
