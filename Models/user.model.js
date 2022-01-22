@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
     user_id: {
       type: String,
       required: true,
-      default:'User'+new Date().getTime()
+      default:'Patient'+new Date().getTime()
     },
     name: {
       type: String,
