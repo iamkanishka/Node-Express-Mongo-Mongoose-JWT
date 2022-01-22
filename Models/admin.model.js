@@ -14,8 +14,8 @@ const userSchema = new mongoose.Schema(
     mobile: {
       type: String,
       required: true,
-      min: 10,
-      max: 10,
+      minlength: 10,
+      maxlength: 10,
     },
     role: {
       type: Array,
