@@ -3,8 +3,13 @@ const userModel = require("../Models/user.model");
 const bcrypt = require('bcryptjs');
 const Util = require('../Utils/util')
 
-
-exports.createUser = async (req, res, next) => {
+/**
+ * 
+ * @param {name,email,phone,password} req Request has the incomming Data of User  
+ * @param {{Status, message}} res Response provides for corresponding  request
+ * @returns Returns with User Creation
+ */
+exports.createUser = async (req, res) => {
     const {
         name,
         email,
@@ -64,3 +69,6 @@ exports.createUser = async (req, res, next) => {
     }
    
 }
+
+
+
