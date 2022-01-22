@@ -26,7 +26,7 @@ exports.createUser = async (req, res, next) => {
     if (!Util.emailcheck(email)) {
         return res.send({
             status: 3001,
-            message: "Please provide right Email"
+            message: "Please provide right formatted Email"
         })
     }
     if (!phone || phone == null || phone == undefined || String(phone).length == 0) {
@@ -40,9 +40,7 @@ exports.createUser = async (req, res, next) => {
  
         const gensalt =  await bcrypt.genSalt(10);
         const encryptedpassword = await bcrypt.hash(password, gensalt);
-
-
-        const user = new userModel({
+         const user = new userModel({
             name: name,
             email: email,
             mobile: phone,
@@ -53,9 +51,9 @@ exports.createUser = async (req, res, next) => {
         user.save(async (err,result)=>{
            if(err){
             console.log(err)
-              return res.send({status:3020, Message:'Got some Error'})
+              return res.send({status:3020, Message:err._message,error:err.errors})
            }else{
-             return res.send({status:30023, Message:'User Created Succesfully'})
+             return res.send({status:3023, Message:'User Created Succesfully'})
            } 
         })
 
