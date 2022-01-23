@@ -19,7 +19,7 @@ exports.emailcheck = (email) => {
  */
 exports.passwordcheck = (password) => {
 
-    const passwordstatus = /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{5,}$/.test(email)
+    const passwordstatus = /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z]).{5,}$/.test(password)
     return passwordstatus
 }
 
@@ -60,6 +60,10 @@ exports.userExistencecheck = async (email, phone) => {
             status: 3099,
             Message: 'User Already Exits',
             success: false
+        }
+    }else{
+        return {
+           success: true
         }
     }
 

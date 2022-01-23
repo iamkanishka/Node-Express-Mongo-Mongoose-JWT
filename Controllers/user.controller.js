@@ -45,7 +45,7 @@ exports.userRegisteration = async (req, res) => {
 
     try {
         const usercheck = await Util.userExistencecheck(email, phone)
-        console.log(usercheck)
+        
         if (!usercheck.success) {
             return res.send({
                 status: usercheck.status,
