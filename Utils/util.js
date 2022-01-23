@@ -40,7 +40,7 @@ exports.userExistencecheck = async (email, phone) => {
         email: email,
         mobile: phone
     });
-   
+
     if (useremailcheck) {
         return {
             status: 3099,
