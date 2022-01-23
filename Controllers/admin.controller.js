@@ -42,33 +42,51 @@ exports.createUser = async (req, res) => {
     }
 
     try {
- 
-        const gensalt =  await bcrypt.genSalt(10);
+
+
+        const usercheck = await Util.userExistencecheck(email, phone)
+        console.log(usercheck)
+        if (!usercheck.success) {
+            return res.send({
+                status: usercheck.status,
+                message: usercheck.Message
+            })
+        }
+
+
+        const gensalt = await bcrypt.genSalt(10);
         const encryptedpassword = await bcrypt.hash(password, gensalt);
-         const user = new userModel({
+        const user = new userModel({
             name: name,
             email: email,
             mobile: phone,
             password: encryptedpassword,
-            isActive:false,
+            isActive: false,
             isVerified: false
         })
-        user.save(async (err,result)=>{
-           if(err){
-            console.log(err)
-              return res.send({status:3020, Message:err._message,error:err.errors})
-           }else{
-             return res.send({status:3023, Message:'User Created Succesfully'})
-           } 
+        user.save(async (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.send({
+                    status: 3020,
+                    Message: err._message,
+                    error: err.errors
+                })
+            } else {
+                return res.send({
+                    status: 3023,
+                    Message: 'User Created Succesfully'
+                })
+            }
         })
 
 
     } catch (err) {
         console.log(err)
-        return res.send({status:3002, Message:'User Created Succesfully'})
+        return res.send({
+            status: 3002,
+            Message: 'User Created Succesfully'
+        })
     }
-   
+
 }
-
-
-

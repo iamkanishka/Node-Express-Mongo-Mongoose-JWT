@@ -2,6 +2,7 @@
 const userModel = require("../Models/user.model");
 const bcrypt = require('bcryptjs');
 const Util = require('../Utils/util')
+const jwt = require("jsonwebtoken");
 
 /**
  * 
@@ -10,6 +11,7 @@ const Util = require('../Utils/util')
  * @returns Returns with User Creation
  */
 exports.userRegisteration = async (req, res) => {
+    console.log('user creation')
     const {
         name,
         email,
@@ -42,33 +44,131 @@ exports.userRegisteration = async (req, res) => {
     }
 
     try {
- 
-        const gensalt =  await bcrypt.genSalt(10);
+        const usercheck = await Util.userExistencecheck(email, phone)
+        console.log(usercheck)
+        if (!usercheck.success) {
+            return res.send({
+                status: usercheck.status,
+                message: usercheck.Message
+            })
+        }
+
+
+        const gensalt = await bcrypt.genSalt(10);
         const encryptedpassword = await bcrypt.hash(password, gensalt);
-         const user = new userModel({
+        const user = new userModel({
             name: name,
             email: email,
             mobile: phone,
             password: encryptedpassword,
-            isActive:false,
+            isActive: false,
             isVerified: false
         })
-        user.save(async (err,result)=>{
-           if(err){
-            console.log(err)
-              return res.send({status:3020, Message:err._message,error:err.errors})
-           }else{
-             return res.send({status:3023, Message:'User Created Succesfully'})
-           } 
+        user.save(async (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.send({
+                    status: 3020,
+                    Message: err._message,
+                    error: err.errors
+                })
+            } else {
+                return res.send({
+                    status: 3023,
+                    Message: 'User Created Succesfully'
+                })
+            }
         })
 
 
     } catch (err) {
         console.log(err)
-        return res.send({status:3002, Message:'User Created Succesfully'})
+        return res.send({
+            status: 3000,
+            Message: 'Something Went wrong Please try Again'
+        })
     }
-   
+
 }
 
+/**
+ * 
+ * @param {{email,password}} req Request has the incomming Data of User's email and password  
+ * @param {{Status, message, token}} res Response provides for corresponding  request
+ * @returns Returns with User's token, with status and message for the signin
+ */
+exports.usersigninwithemailpassword = async (req, res) => {
+    const {
+        email,
+        password
+    } = req.body
+
+    if (!email || email === null || email == undefined || String(email).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "Email is Required"
+        })
+    }
+    if (!Util.emailcheck(email)) {
+        return res.send({
+            status: 3001,
+            message: "Please provide right formatted Email"
+        })
+    }
+    if (!password || password === null || password == undefined || String(password).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "Password is Required"
+        })
+    }
+    if (!Util.passwordcheck(password)) {
+        return res.send({
+            status: 3001,
+            message: "Please provide right formatted Password"
+        })
+    }
+
+    try {
+        //Checking Users Email for users Existence with Email
+        const user = await userModel.findOne({
+            email: email
+        });
+        if (!user) {
+            return res.send({
+                status: 3101,
+                message: "User dosen't Exist"
+            })
+        } else {
+            const validPassword = await bcrypt.compare(password, user.password);
+            if (!validPassword) {
+                return res.status(200).json({
+                    "message": "Invalid Password",
+                    "status": 3101,
+                })
+            }
+            //Generating JWT token
+            const token = jwt.sign({
+                email: user.email,
+                user_id: user.user_id,
+            }, process.env.JWT_SECRET, {
+                expiresIn: "10d"
+            });
+
+            res.status(200).json({
+                token: token,
+                userId: user.user_id,
+                message: "User Logged in"
+            });
+
+        }
 
 
+    } catch (err) {
+        console.log(err)
+        return res.send({
+            status: 3000,
+            Message: 'Something Went wrong Please try Again'
+        })
+    }
+
+}
