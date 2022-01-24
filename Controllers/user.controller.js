@@ -171,4 +171,15 @@ exports.usersigninwithemailpassword = async (req, res) => {
         })
     }
 
+
+
+    exports.getUserDetails = async (req, res) => {
+
+
+    }
+
+
+
+
+
 }
