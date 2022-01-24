@@ -6,7 +6,7 @@ Its a Simple startup NodeJS Application with Express Framework and Mongo and Mon
 To Start with this  Node-Express-Mongo-Mongoose-JWT Impelemenatted Project, Please start with Following Steps
 
 
-## Follow the Below Steps
+# Follow the Below Steps
 
 Note:- Before Starting with this Project, Please make sure you have installed latest stabled version of [Nodejs](https://nodejs.org/en/) Application in your System 
 
@@ -15,7 +15,7 @@ Note:- Before Starting with this Project, Please make sure you have installed la
 Clone the project
 
 ```bash
-  git clone https://github.com/iamkanishka/nestmongodbcrud.git
+  git clone https://github.com/iamkanishka/Node-Express-Mongo-Mongoose-JWT.git
 ```
 
 Go to the project directory
