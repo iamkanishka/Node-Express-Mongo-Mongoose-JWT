@@ -173,7 +173,7 @@ exports.editUser = async (req, res) => {
         console.log(err)
         return res.send({
             status: 3002,
-            Message: 'User Created Succesfully'
+            Message: 'Something Went wrong Please try Again'
         })
     }
 
