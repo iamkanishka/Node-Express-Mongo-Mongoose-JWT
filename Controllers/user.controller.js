@@ -45,7 +45,7 @@ exports.userRegisteration = async (req, res) => {
 
     try {
         const usercheck = await Util.userExistencecheck(email, phone)
-        
+
         if (!usercheck.success) {
             return res.send({
                 status: usercheck.status,
@@ -171,15 +171,53 @@ exports.usersigninwithemailpassword = async (req, res) => {
         })
     }
 
+}
 
 
-    exports.getUserDetails = async (req, res) => {
+exports.getUserDetails = async (req, res) => {
+
+    const {
+        email,
+        userId
+    } = req.body
+
+    try {
 
 
+        if (!email || email === null || email == undefined || String(email).length == 0) {
+            return res.send({
+                status: 3001,
+                message: "Email is Required"
+            })
+        }
+        if (!Util.emailcheck(email)) {
+            return res.send({
+                status: 3001,
+                message: "Please provide right formatted Email"
+            })
+        }
+
+        const user = await userModel.findOne({
+            email: email,
+            user_id: userId
+        }).select('-password')
+        if (!user) {
+            return res.send({
+                status: 3101,
+                message: "User dosen't Exist"
+            })
+        } else {
+            res.status(200).json({
+
+                data: user,
+                message: "User Details"
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        return res.send({
+            status: 3000,
+            Message: 'Something Went wrong Please try Again'
+        })
     }
-
-
-
-
-
 }
