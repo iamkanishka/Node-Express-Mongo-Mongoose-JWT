@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: true,
     },
+    unique_id: {
+      type: Boolean,
+      default: true,
+    },
   },
 
 

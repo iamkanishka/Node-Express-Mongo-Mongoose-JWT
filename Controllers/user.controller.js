@@ -16,7 +16,8 @@ exports.userRegisteration = async (req, res) => {
         name,
         email,
         phone,
-        password
+        password,
+        uniqueid
     } = req.body
     if (!name || name == null || name == undefined || String(name).length == 0) {
         return res.send({
@@ -62,7 +63,8 @@ exports.userRegisteration = async (req, res) => {
             mobile: phone,
             password: encryptedpassword,
             isActive: false,
-            isVerified: false
+            isVerified: false,
+            unique_id:uniqueid
         })
         user.save(async (err, result) => {
             if (err) {
