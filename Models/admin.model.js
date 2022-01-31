@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
+const sub_adminSchema = new mongoose.Schema(
   {
     name: {
       first: String,
@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema(
     email: {
       type: email,
      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
     },
     mobile: {
       type: String,
@@ -25,10 +29,14 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    type: {
+      type: String,
+      default: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("subadmin", sub_adminSchema);
