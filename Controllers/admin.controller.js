@@ -104,7 +104,7 @@ exports.editUser = async (req, res) => {
         name,
         email,
         phone,
-       
+
         id
     } = req.body
     if (!name || name == null || name == undefined || String(name).length == 0) {
@@ -145,13 +145,11 @@ exports.editUser = async (req, res) => {
         }
 
 
-        const gensalt = await bcrypt.genSalt(10);
-        const encryptedpassword = await bcrypt.hash(password, gensalt);
-        const user = new userModel({
+        const updateUser = {
             name: name,
             email: email,
             mobile: phone,
-           })
+        }
         user.save(async (err, result) => {
             if (err) {
                 console.log(err)
@@ -176,5 +174,68 @@ exports.editUser = async (req, res) => {
             Message: 'Something Went wrong Please try Again'
         })
     }
+
+}
+
+
+
+exports.retriveUsers = async (req, res) => {
+
+    try {
+
+
+        const users = await userModel.find(async (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.send({
+                    status: 3020,
+                    Message: err._message,
+                    error: err.errors
+                })
+            } else {
+                return res.send({
+                    status: 3023,
+                    Message: 'All Users Retrived Succesfully'
+                })
+            }
+        })
+
+
+    } catch (err) {
+        console.log(err)
+        return res.send({
+            status: 3002,
+            Message: 'Something Went wrong Please try Again'
+        })
+    }
+
+}
+
+
+
+
+/**
+ * 
+ * @param {{user_id}} req Request has the incomming Data of User  
+ * @param {{Status, message}} res Response provides for corresponding  request
+ * @returns Returns with User Creation
+ */
+exports.deleteUser = async (req, res) => {
+
+    const userId = req.params.id;
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+        const error = new Error("No user found!");
+        error.statusCode = 402;
+        throw error;
+    }
+
+    await user.findByIdAndRemove(userId);
+
+    res.status(200).json({
+        Status: 3000,
+        message: "user deleted successfully",
+    });
 
 }
