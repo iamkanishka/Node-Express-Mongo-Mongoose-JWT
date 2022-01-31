@@ -300,7 +300,7 @@ exports.createsub_Admin = async (req, res) => {
 
         const gensalt = await bcrypt.genSalt(10);
         const encryptedpassword = await bcrypt.hash(password, gensalt);
-        const user = new userModel({
+        const user = new adminModel({
             name: name,
             email: email,
             mobile: phone,
