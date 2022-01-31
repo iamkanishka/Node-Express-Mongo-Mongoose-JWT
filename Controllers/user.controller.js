@@ -175,7 +175,12 @@ exports.usersigninwithemailpassword = async (req, res) => {
 
 }
 
-
+/**
+ * 
+ * @param {{email,userId}} req Request has the incomming Data of User's email and password  
+ * @param {{Status, message, token}} res Response provides for corresponding  request
+ * @returns Returns with User's token, with status and message for the signin
+ */
 exports.getUserDetails = async (req, res) => {
 
     const {
@@ -222,4 +227,82 @@ exports.getUserDetails = async (req, res) => {
             Message: 'Something Went wrong Please try Again'
         })
     }
+}
+
+
+exports.editProfile = async (req, res) => {
+    const {
+        name,
+        email,
+        phone,
+
+    } = req.body
+    if (!name || name == null || name == undefined || String(name).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "Name is Required"
+        })
+    }
+    if (!email || email === null || email == undefined || String(email).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "Email is Required"
+        })
+    }
+    if (!Util.emailcheck(email)) {
+        return res.send({
+            status: 3001,
+            message: "Please provide right formatted Email"
+        })
+    }
+    if (!phone || phone == null || phone == undefined || String(phone).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "Phone Number is Required"
+        })
+    }
+
+    try {
+
+
+        const usercheck = await Util.userExistencecheck(email, phone)
+        console.log(usercheck)
+        if (!usercheck.success) {
+            return res.send({
+                status: usercheck.status,
+                message: usercheck.Message
+            })
+        }
+
+
+        const updateUser = {
+            name: name,
+            email: email,
+            mobile: phone,
+        }
+        user.save(async (err, result) => {
+            if (err) {
+                console.log(err)
+                return res.send({
+                    status: 3020,
+                    Message: err._message,
+                    error: err.errors
+                })
+            } else {
+                return res.send({
+                    status: 3023,
+                    Message: 'User Edited  Succesfully'
+                })
+            }
+        })
+
+
+    } catch (err) {
+        console.log(err)
+        return res.send({
+            status: 3002,
+            Message: 'Something Went wrong Please try Again'
+        })
+    }
+
 }

@@ -98,14 +98,18 @@ exports.createUser = async (req, res) => {
 }
 
 
-
+/**
+ * 
+ * @param {{name,email,phone}} req Request has the incomming Data of User  
+ * @param {{Status, message}} res Response provides for corresponding  request
+ * @returns Returns with User Creation
+ */
 exports.editUser = async (req, res) => {
     const {
         name,
         email,
         phone,
 
-        id
     } = req.body
     if (!name || name == null || name == undefined || String(name).length == 0) {
         return res.send({
