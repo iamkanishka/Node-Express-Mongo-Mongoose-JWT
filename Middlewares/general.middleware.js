@@ -8,7 +8,7 @@ module.exports.apptokencheck = async (req, res, next) => {
   ) {
     try {
      generaltoken=req.headers.authorization
-      if (String(generaltoken) === String("appId89519001647894561235")) {
+      if (String(generaltoken) === String(process.env.appid)) {
         next();
       } else {
         return res.status(401).json({

@@ -64,7 +64,8 @@ exports.userRegisteration = async (req, res) => {
             password: encryptedpassword,
             isActive: false,
             isVerified: false,
-            unique_id:uniqueid
+            unique_id:uniqueid,
+            role:"normal"
         })
         user.save(async (err, result) => {
             if (err) {
@@ -230,7 +231,7 @@ exports.getUserDetails = async (req, res) => {
 }
 
 
-exports.editProfile = async (req, res) => {
+exports.editUserDetails = async (req, res) => {
     const {
         name,
         email,

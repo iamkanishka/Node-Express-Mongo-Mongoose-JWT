@@ -5,10 +5,6 @@ const generalMiddleware = require('../Middlewares/general.middleware')
 
 
 exports.userRoutes = (app) => {
-    //     app.post(preURL+'/userRegisteration',userMiddleware.usertokencheck,[
-    //    userController.userRegisteration
-    //     ])
-
     app.post(preURL + 'userRegisteration', generalMiddleware.apptokencheck, [
         userController.userRegisteration
     ])
@@ -19,5 +15,8 @@ exports.userRoutes = (app) => {
 
     app.post(preURL + 'getUserDetails', generalMiddleware.apptokencheck, userMiddleware.usertokencheck, [
         userController.getUserDetails
+    ])
+    app.post(preURL + 'editUserDetails', generalMiddleware.apptokencheck, userMiddleware.usertokencheck, [
+        userController.editUserDetails
     ])
 }
