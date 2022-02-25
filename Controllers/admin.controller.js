@@ -100,15 +100,16 @@ exports.createUser = async (req, res) => {
 
 /**
  * 
- * @param {{name,email,phone}} req Request has the incomming Data of User  
+ * @param {{name,email,phone,UID}} req Request has the incomming Data of User  
  * @param {{Status, message}} res Response provides for corresponding  request
- * @returns Returns with User Creation
+ * @returns Returns with User Edit
  */
 exports.editUser = async (req, res) => {
     const {
         name,
         email,
         phone,
+        uid
 
     } = req.body
     if (!name || name == null || name == undefined || String(name).length == 0) {
@@ -195,7 +196,12 @@ exports.editUser = async (req, res) => {
 }
 
 
-
+/**
+ * 
+ * Request has no incomming Data of User  
+ * @param {{Status, message,data}} res Response provides for corresponding  request
+ * @returns Returns with all the users list
+ */
 exports.getAllUsers = async (req, res) => {
 
     try {
@@ -212,10 +218,11 @@ exports.getAllUsers = async (req, res) => {
             } else {
                 return res.send({
                     status: 3023,
-                    Message: 'All Users Retrived Succesfully'
+                    Message: 'All Users Retrived Succesfully',
+                    data:users
                 })
             }
-        })
+        }).select('-password')
 
 
     } catch (err) {
@@ -235,11 +242,11 @@ exports.getAllUsers = async (req, res) => {
  * 
  * @param {{user_id}} req Request has the incomming Data of User  
  * @param {{Status, message}} res Response provides for corresponding  request
- * @returns Returns with User Creation
+ * @returns Returns with User Deletion
  */
 exports.deleteUser = async (req, res) => {
 
-    const userId = req.params.id;
+    const userId = req.body.id;
     const user = await userModel.findById(userId);
 
     if (!user) {
@@ -257,7 +264,12 @@ exports.deleteUser = async (req, res) => {
 
 }
 
-
+/**
+ * 
+ * @param {{name,email,phone,password}} req Request has the incomming Data of User  
+ * @param {{Status, message}} res Response provides for corresponding  request
+ * @returns Returns with SubAdmin Creation
+ */
 exports.createsub_Admin = async (req, res) => {
     const {
         name,
@@ -346,7 +358,12 @@ exports.createsub_Admin = async (req, res) => {
 
 }
 
-
+/**
+ * 
+ * @param {{email,phone,UID}} req Request has the incomming Data of User  
+ * @param {{Status, message}} res Response provides for corresponding  request
+ * @returns Returns with Update Role for user 
+ */
 exports.assignRoletoUser = async (req, res) => {
 
     const {
@@ -375,6 +392,12 @@ exports.assignRoletoUser = async (req, res) => {
             message: "Phone Number is Required"
         })
     }
+    if (!uid || uid == null || uid == undefined || String(uid).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "UID is Required"
+        })
+    }
 
     try {
 
@@ -387,6 +410,33 @@ exports.assignRoletoUser = async (req, res) => {
                 message: usercheck.Message
             })
         }
+      
+
+ 
+        var userobjid = {
+            '_id': mongoose.Types.ObjectId(uid),
+         };
+
+        const updateUser = {
+            role: "Paid",
+        }
+        userModel.findOneAndUpdate(userobjid, updateUser)
+        .exec()
+        .then(async (result, data) => {
+            return res.send({
+                    status: 3023,
+                    Message: 'User Role Updated Succesfully'
+                })
+            
+        }).catch((err)=>{
+            console.log(err)
+            return res.send({
+                status: 3020,
+                Message: err._message,
+                error: err.errors
+            })
+        })
+
 
 
 

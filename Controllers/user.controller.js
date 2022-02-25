@@ -230,7 +230,12 @@ exports.getUserDetails = async (req, res) => {
     }
 }
 
-
+/**
+ * 
+ * @param {{name,email,phone,UID}} req Request has the incomming Data of User  
+ * @param {{Status, message}} res Response provides for corresponding  request
+ * @returns Returns with User Edit
+ */
 exports.editUserDetails = async (req, res) => {
     const {
         name,
