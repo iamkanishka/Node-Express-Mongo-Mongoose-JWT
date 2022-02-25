@@ -1,4 +1,4 @@
-//Impiorting Required Modules
+//Importing Required Modules
 const userModel = require("../Models/user.model");
 const adminModel = require("../Models/admin.model");
 
@@ -16,7 +16,7 @@ exports.createUser = async (req, res) => {
         name,
         email,
         phone,
-        password
+        uniqueid
     } = req.body
     if (!name || name == null || name == undefined || String(name).length == 0) {
         return res.send({
@@ -36,12 +36,7 @@ exports.createUser = async (req, res) => {
             message: "Please provide right formatted Email"
         })
     }
-    if (!Util.passwordcheck(password)) {
-        return res.send({
-            status: 3001,
-            message: "Please provide right formatted Password"
-        })
-    }
+ 
     if (!phone || phone == null || phone == undefined || String(phone).length == 0) {
         return res.send({
             status: 3001,
@@ -63,14 +58,17 @@ exports.createUser = async (req, res) => {
 
 
         const gensalt = await bcrypt.genSalt(10);
-        const encryptedpassword = await bcrypt.hash(password, gensalt);
+        const userPassword = 'JWT'+Math.floor(1000 + Math.random() * 9000)+new Date().getTime()
+        const encryptedpassword = await bcrypt.hash( userPassword, gensalt);
         const user = new userModel({
             name: name,
             email: email,
             mobile: phone,
             password: encryptedpassword,
             isActive: false,
-            isVerified: false
+            isVerified: false,
+            unique_id:uniqueid,
+
         })
         user.save(async (err, result) => {
             if (err) {
@@ -137,6 +135,12 @@ exports.editUser = async (req, res) => {
             message: "Phone Number is Required"
         })
     }
+    if (!uid || uid == null || uid == undefined || String(uid).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "UID is Required"
+        })
+    }
 
     try {
 
@@ -149,28 +153,35 @@ exports.editUser = async (req, res) => {
                 message: usercheck.Message
             })
         }
+      
 
+ 
+        var userobjid = {
+            '_id': mongoose.Types.ObjectId(uid),
+         };
 
         const updateUser = {
             name: name,
             email: email,
             mobile: phone,
         }
-        user.save(async (err, result) => {
-            if (err) {
-                console.log(err)
-                return res.send({
-                    status: 3020,
-                    Message: err._message,
-                    error: err.errors
-                })
-            } else {
-                return res.send({
+        userModel.findOneAndUpdate(userobjid, updateUser)
+        .exec()
+        .then(async (result, data) => {
+            return res.send({
                     status: 3023,
                     Message: 'User Edited  Succesfully'
                 })
-            }
+            
+        }).catch((err)=>{
+            console.log(err)
+            return res.send({
+                status: 3020,
+                Message: err._message,
+                error: err.errors
+            })
         })
+
 
 
     } catch (err) {
@@ -185,7 +196,7 @@ exports.editUser = async (req, res) => {
 
 
 
-exports.retriveUsers = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
 
     try {
 
@@ -329,8 +340,60 @@ exports.createsub_Admin = async (req, res) => {
         console.log(err)
         return res.send({
             status: 3002,
-            Message: 'User Created Succesfully'
+            Message: 'Subadmin Created Succesfully'
         })
+    }
+
+}
+
+
+exports.assignRoletoUser = async (req, res) => {
+
+    const {
+        name,
+        email,
+        phone,
+     
+    } = req.body
+ 
+    if (!email || email === null || email == undefined || String(email).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "Email is Required"
+        })
+    }
+    if (!Util.emailcheck(email)) {
+        return res.send({
+            status: 3001,
+            message: "Please provide right formatted Email"
+        })
+    }
+
+    if (!phone || phone == null || phone == undefined || String(phone).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "Phone Number is Required"
+        })
+    }
+
+    try {
+
+
+        const usercheck = await Util.userExistencecheck(email, phone)
+        console.log(usercheck)
+        if (!usercheck.success) {
+            return res.send({
+                status: usercheck.status,
+                message: usercheck.Message
+            })
+        }
+
+
+
+
+    }catch(err){
+        console.log(err)
+
     }
 
 }

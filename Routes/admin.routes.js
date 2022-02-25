@@ -9,17 +9,17 @@ exports.adminRoutes = (app) => {
     app.post(preURL + 'createUser', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
         adminController.createUser
     ])
-    // app.post(preURL + 'editUser', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
-    //     adminController.createUser
-    // ])
-    // app.get(preURL + 'getUser', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
-    //     adminController.createUser
-    // ])
-    // app.post(preURL + 'deleteUser', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
-    //     adminController.createUser
-    // ])
-    // app.post(preURL + 'asignRolestoUser', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
-    //     adminController.createUser
-    // ])
+    app.post(preURL + 'editUser', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
+        adminController.editUser
+    ])
+    app.get(preURL + 'deleteUser', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
+        adminController.deleteUser
+    ])
+    app.post(preURL + 'getAllUsers', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
+        adminController.getAllUsers
+    ])
+    app.post(preURL + 'asignRolestoUser', generalMiddleware.apptokencheck, adminMiddleware.usertokencheck, [
+        adminController.assignRoletoUser
+    ])
     
 }

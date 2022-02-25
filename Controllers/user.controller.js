@@ -236,6 +236,7 @@ exports.editUserDetails = async (req, res) => {
         name,
         email,
         phone,
+        uid
 
     } = req.body
     if (!name || name == null || name == undefined || String(name).length == 0) {
@@ -263,6 +264,13 @@ exports.editUserDetails = async (req, res) => {
         })
     }
 
+    if (!uid || uid == null || uid == undefined || String(uid).length == 0) {
+        return res.send({
+            status: 3001,
+            message: "UID is Required"
+        })
+    }
+
     try {
 
 
@@ -274,28 +282,36 @@ exports.editUserDetails = async (req, res) => {
                 message: usercheck.Message
             })
         }
+      
 
+ 
+        var userobjid = {
+            '_id': mongoose.Types.ObjectId(uid),
+         };
 
         const updateUser = {
             name: name,
             email: email,
             mobile: phone,
         }
-        user.save(async (err, result) => {
-            if (err) {
-                console.log(err)
-                return res.send({
-                    status: 3020,
-                    Message: err._message,
-                    error: err.errors
-                })
-            } else {
-                return res.send({
+        userModel.findOneAndUpdate(userobjid, updateUser)
+        .exec()
+        .then(async (result, data) => {
+            return res.send({
                     status: 3023,
                     Message: 'User Edited  Succesfully'
                 })
-            }
+            
+        }).catch((err)=>{
+            console.log(err)
+            return res.send({
+                status: 3020,
+                Message: err._message,
+                error: err.errors
+            })
         })
+
+
 
 
     } catch (err) {
