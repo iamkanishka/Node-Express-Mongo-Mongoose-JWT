@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    user_id: {
+    admin_id: {
       type: String,
       required: true,
       default:'User'+new Date().getTime()
@@ -28,12 +28,16 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: true,
     },
+    role: {
+      type: String,
+      required: true,
+    },
     isVerified: {
       type: Boolean,
       default: true,
     },
     unique_id: {
-      type: Boolean,
+      type: String,
       default: true,
     },
   },

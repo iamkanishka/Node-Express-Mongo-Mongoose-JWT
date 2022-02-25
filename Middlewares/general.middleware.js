@@ -1,25 +1,31 @@
-const jwt = require('jsonwebtoken');
-
+const jwt = require("jsonwebtoken");
 
 module.exports.apptokencheck = async (req, res, next) => {
-    let token;
-
-    if (req.headers.authorization && req.headers.authorization.startsWith('appId')) {
-        try {
-            token = req.headers.authorization.split(' ')[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-            next();
-        } catch (err) {
-            if (!err.statusCode) {
-                err.statusCode = 401;
-            }
-            next(err);
-        }
-    }
-    if (!token) {
+  let generaltoken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("appId")
+  ) {
+    try {
+     generaltoken=req.headers.authorization
+      if (String(generaltoken) === String("appId89519001647894561235")) {
+        next();
+      } else {
         return res.status(401).json({
-            message: 'Not Authorized!',
+          message: "Could Not Authorize!",
         });
+      }
+    } catch (err) {
+      if (!err.statusCode) {
+        return res.status(401).json({
+          message: "Not Authorized!",
+        });
+      }
     }
+  }
+  if (!generaltoken) {
+    return res.status(401).json({
+      message: "Could Not Authorize!",
+    });
+  }
 };
