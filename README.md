@@ -3,6 +3,11 @@
 
 Its a Simple startup NodeJS Application with Express Framework and Mongo and Mongoose with JWT Implementation.
 
+This NodeJS Application consist fgollowing features
+1. Creating, Editing, Deleting User with adding roles to the users by the admin
+2. Usage of General  Middlewares and User Middlewares in the routes 
+3. Creating Sub-admins by the main Admin
+
 To Start with this  Node-Express-Mongo-Mongoose-JWT Impelemenatted Project, Please start with Following Steps
 
 
