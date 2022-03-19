@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js"
   },
-  "keywords": [],
+  "keywords": ["JWT", "Nodejs","Authentication", "Login", "Signup"],
   "author": "",
   "license": "ISC",
   "dependencies": {
