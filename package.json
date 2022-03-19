@@ -7,7 +7,7 @@
     "start": "nodemon index.js"
   },
   "keywords": ["JWT", "Nodejs","Authentication", "Login", "Signup"],
-  "author": "",
+  "author": "Kanishka Naik",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
